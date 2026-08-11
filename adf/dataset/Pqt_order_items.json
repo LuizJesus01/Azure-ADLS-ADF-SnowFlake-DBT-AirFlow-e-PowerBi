@@ -1,0 +1,50 @@
+{
+	"name": "Pqt_order_items",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "order_items.parquet",
+				"folderPath": "ProjetoSnowFlake/Raw/parquet",
+				"container": "projetos"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": [
+			{
+				"name": "order_id",
+				"type": "UTF8"
+			},
+			{
+				"name": "order_item_id",
+				"type": "INT64"
+			},
+			{
+				"name": "product_id",
+				"type": "UTF8"
+			},
+			{
+				"name": "seller_id",
+				"type": "UTF8"
+			},
+			{
+				"name": "shipping_limit_date",
+				"type": "UTF8"
+			},
+			{
+				"name": "price",
+				"type": "DOUBLE"
+			},
+			{
+				"name": "freight_value",
+				"type": "DOUBLE"
+			}
+		]
+	}
+}
