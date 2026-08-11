@@ -1,0 +1,159 @@
+{
+	"name": "CopyAdlsToSnowflake",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "ParquetSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "ParquetReadSettings"
+						}
+					},
+					"sink": {
+						"type": "SnowflakeV2Sink",
+						"importSettings": {
+							"type": "SnowflakeImportCopyCommand"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "order_id",
+									"type": "String",
+									"physicalType": "UTF8"
+								},
+								"sink": {
+									"name": "ORDER_ID",
+									"type": "String",
+									"physicalType": "VARCHAR"
+								}
+							},
+							{
+								"source": {
+									"name": "customer_id",
+									"type": "String",
+									"physicalType": "UTF8"
+								},
+								"sink": {
+									"name": "CUSTOMER_ID",
+									"type": "String",
+									"physicalType": "VARCHAR"
+								}
+							},
+							{
+								"source": {
+									"name": "order_status",
+									"type": "String",
+									"physicalType": "UTF8"
+								},
+								"sink": {
+									"name": "ORDER_STATUS",
+									"type": "String",
+									"physicalType": "VARCHAR"
+								}
+							},
+							{
+								"source": {
+									"name": "order_purchase_timestamp",
+									"type": "String",
+									"physicalType": "UTF8"
+								},
+								"sink": {
+									"name": "ORDER_PURCHASE_TIMESTAMP",
+									"type": "String",
+									"physicalType": "VARCHAR"
+								}
+							},
+							{
+								"source": {
+									"name": "order_approved_at",
+									"type": "String",
+									"physicalType": "UTF8"
+								},
+								"sink": {
+									"name": "ORDER_APPROVED_AT",
+									"type": "String",
+									"physicalType": "VARCHAR"
+								}
+							},
+							{
+								"source": {
+									"name": "order_delivered_carrier_date",
+									"type": "String",
+									"physicalType": "UTF8"
+								},
+								"sink": {
+									"name": "ORDER_DELIVERED_CARRIER_DATE",
+									"type": "String",
+									"physicalType": "VARCHAR"
+								}
+							},
+							{
+								"source": {
+									"name": "order_delivered_customer_date",
+									"type": "String",
+									"physicalType": "UTF8"
+								},
+								"sink": {
+									"name": "ORDER_DELIVERED_CUSTOMER_DATE",
+									"type": "String",
+									"physicalType": "VARCHAR"
+								}
+							},
+							{
+								"source": {
+									"name": "order_estimated_delivery_date",
+									"type": "String",
+									"physicalType": "UTF8"
+								},
+								"sink": {
+									"name": "ORDER_ESTIMATED_DELIVERY_DATE",
+									"type": "String",
+									"physicalType": "VARCHAR"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Pqt_orders",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Snf_orders",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"annotations": []
+	}
+}
