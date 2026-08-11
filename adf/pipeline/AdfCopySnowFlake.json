@@ -323,57 +323,7 @@
 							"type": "SnowflakeImportCopyCommand"
 						}
 					},
-					"enableStaging": false,
-					"translator": {
-						"type": "TabularTranslator",
-						"mappings": [
-							{
-								"source": {
-									"path": "$['customer_id']"
-								},
-								"sink": {
-									"name": "CUSTOMER_ID",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"path": "$['customer_unique_id']"
-								},
-								"sink": {
-									"name": "CUSTOMER_UNIQUE_ID",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"path": "$['customer_zip_code_prefix']"
-								},
-								"sink": {
-									"name": "CUSTOMER_ZIP_CODE_PREFIX",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"path": "$['customer_city']"
-								},
-								"sink": {
-									"name": "CUSTOMER_CITY",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"path": "$['customer_state']"
-								},
-								"sink": {
-									"name": "CUSTOMER_STATE",
-									"type": "String"
-								}
-							}
-						]
-					}
+					"enableStaging": false
 				},
 				"inputs": [
 					{
@@ -418,57 +368,7 @@
 							"type": "SnowflakeImportCopyCommand"
 						}
 					},
-					"enableStaging": false,
-					"translator": {
-						"type": "TabularTranslator",
-						"mappings": [
-							{
-								"source": {
-									"path": "$['order_id']"
-								},
-								"sink": {
-									"name": "ORDER_ID",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"path": "$['payment_sequential']"
-								},
-								"sink": {
-									"name": "PAYMENT_SEQUENTIAL",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"path": "$['payment_type']"
-								},
-								"sink": {
-									"name": "PAYMENT_TYPE",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"path": "$['payment_installments']"
-								},
-								"sink": {
-									"name": "PAYMENT_INSTALLMENTS",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"path": "$['payment_value']"
-								},
-								"sink": {
-									"name": "PAYMENT_VALUE",
-									"type": "String"
-								}
-							}
-						]
-					}
+					"enableStaging": false
 				},
 				"inputs": [
 					{
@@ -513,75 +413,7 @@
 							"type": "SnowflakeImportCopyCommand"
 						}
 					},
-					"enableStaging": false,
-					"translator": {
-						"type": "TabularTranslator",
-						"mappings": [
-							{
-								"source": {
-									"path": "$['review_id']"
-								},
-								"sink": {
-									"name": "REVIEW_ID",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"path": "$['order_id']"
-								},
-								"sink": {
-									"name": "ORDER_ID",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"path": "$['review_score']"
-								},
-								"sink": {
-									"name": "REVIEW_SCORE",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"path": "$['review_comment_title']"
-								},
-								"sink": {
-									"name": "REVIEW_TITLE",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"path": "$['review_comment_message']"
-								},
-								"sink": {
-									"name": "REVIEW_COMMENT_MESSAGE",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"path": "$['review_creation_date']"
-								},
-								"sink": {
-									"name": "REVIEW_CREATION_DATE",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"path": "$['review_answer_timestamp']"
-								},
-								"sink": {
-									"name": "REVIEW_ANSWER_TIMESTAMP",
-									"type": "String"
-								}
-							}
-						]
-					}
+					"enableStaging": false
 				},
 				"inputs": [
 					{
