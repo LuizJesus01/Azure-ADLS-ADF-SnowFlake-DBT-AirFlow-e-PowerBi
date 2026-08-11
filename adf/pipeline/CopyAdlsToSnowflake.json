@@ -457,7 +457,14 @@
 							"type": "SnowflakeImportCopyCommand"
 						}
 					},
-					"enableStaging": false,
+					"enableStaging": true,
+					"stagingSettings": {
+						"linkedServiceName": {
+							"referenceName": "AzureBlobStorage1",
+							"type": "LinkedServiceReference"
+						},
+						"path": "projetos/ProjetoSnowFlake/Staging"
+					},
 					"translator": {
 						"type": "TabularTranslator",
 						"mappings": [
@@ -620,7 +627,14 @@
 							"type": "SnowflakeImportCopyCommand"
 						}
 					},
-					"enableStaging": false,
+					"enableStaging": true,
+					"stagingSettings": {
+						"linkedServiceName": {
+							"referenceName": "AzureBlobStorage1",
+							"type": "LinkedServiceReference"
+						},
+						"path": "projetos/ProjetoSnowFlake/Staging"
+					},
 					"translator": {
 						"type": "TabularTranslator",
 						"mappings": [
@@ -838,7 +852,14 @@
 							"type": "SnowflakeImportCopyCommand"
 						}
 					},
-					"enableStaging": false,
+					"enableStaging": true,
+					"stagingSettings": {
+						"linkedServiceName": {
+							"referenceName": "AzureBlobStorage1",
+							"type": "LinkedServiceReference"
+						},
+						"path": "projetos/ProjetoSnowFlake/Staging"
+					},
 					"translator": {
 						"type": "TabularTranslator",
 						"mappings": [
@@ -856,7 +877,7 @@
 							},
 							{
 								"source": {
-									"name": "product_category_name_english",
+									"name": "product_category_name_english\r",
 									"type": "String",
 									"physicalType": "String"
 								},

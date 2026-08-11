@@ -1,0 +1,34 @@
+{
+	"name": "csv_category_translation",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "category_translation.csv",
+				"folderPath": "ProjetoSnowFlake/Raw/CSV",
+				"container": "projetos"
+			},
+			"columnDelimiter": ",",
+			"rowDelimiter": "\n",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "product_category_name",
+				"type": "String"
+			},
+			{
+				"name": "product_category_name_english",
+				"type": "String"
+			}
+		]
+	}
+}
