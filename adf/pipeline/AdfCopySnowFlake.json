@@ -33,7 +33,14 @@
 							"type": "SnowflakeImportCopyCommand"
 						}
 					},
-					"enableStaging": false,
+					"enableStaging": true,
+					"stagingSettings": {
+						"linkedServiceName": {
+							"referenceName": "AzureBlobStorage1",
+							"type": "LinkedServiceReference"
+						},
+						"path": "projetos/ProjetoSnowFlake/temp"
+					},
 					"translator": {
 						"type": "TabularTranslator",
 						"mappings": [
