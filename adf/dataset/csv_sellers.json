@@ -1,0 +1,42 @@
+{
+	"name": "csv_sellers",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "sellers.csv",
+				"folderPath": "ProjetoSnowFlake/Raw/CSV",
+				"container": "projetos"
+			},
+			"columnDelimiter": ",",
+			"rowDelimiter": "\r\n",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "seller_id",
+				"type": "String"
+			},
+			{
+				"name": "seller_zip_code_prefix",
+				"type": "String"
+			},
+			{
+				"name": "seller_city",
+				"type": "String"
+			},
+			{
+				"name": "seller_state",
+				"type": "String"
+			}
+		]
+	}
+}
