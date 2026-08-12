@@ -34,7 +34,7 @@
 			}
 		],
 		"typeProperties": {
-			"schema": "BRONZE",
+			"schema": "RAW",
 			"table": "SELLERS"
 		}
 	}

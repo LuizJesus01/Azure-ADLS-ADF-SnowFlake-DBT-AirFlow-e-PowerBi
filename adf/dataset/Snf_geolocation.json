@@ -40,7 +40,7 @@
 			}
 		],
 		"typeProperties": {
-			"schema": "BRONZE",
+			"schema": "RAW",
 			"table": "GEOLOCATION"
 		}
 	}

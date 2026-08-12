@@ -52,7 +52,7 @@
 			}
 		],
 		"typeProperties": {
-			"schema": "BRONZE",
+			"schema": "RAW",
 			"table": "ORDER_ITEMS"
 		}
 	}
