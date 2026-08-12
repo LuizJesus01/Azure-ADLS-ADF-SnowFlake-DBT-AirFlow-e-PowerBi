@@ -15,7 +15,7 @@
 				"container": "projetos"
 			},
 			"columnDelimiter": ",",
-			"rowDelimiter": "\n",
+			"rowDelimiter": "\r\n",
 			"escapeChar": "\\",
 			"firstRowAsHeader": true,
 			"quoteChar": "\""

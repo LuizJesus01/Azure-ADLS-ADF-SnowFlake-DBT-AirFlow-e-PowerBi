@@ -877,7 +877,7 @@
 							},
 							{
 								"source": {
-									"name": "product_category_name_english\r",
+									"name": "product_category_name_english",
 									"type": "String",
 									"physicalType": "String"
 								},

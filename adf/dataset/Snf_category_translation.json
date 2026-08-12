@@ -22,7 +22,7 @@
 			}
 		],
 		"typeProperties": {
-			"schema": "BRONZE",
+			"schema": "RAW",
 			"table": "CATEGORY_TRANSLATION"
 		}
 	}
