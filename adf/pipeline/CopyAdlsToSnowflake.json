@@ -907,6 +907,104 @@
 						"type": "DatasetReference"
 					}
 				]
+			},
+			{
+				"name": "All Copies Completed",
+				"type": "Wait",
+				"dependsOn": [
+					{
+						"activity": "Copy Orders",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Copy Order Items",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Copy Customers",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Copy Payments",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Copy Reviews",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Copy Products",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Copy Sellers",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Copy Geolocation",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Copy Category Translation",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"waitTimeInSeconds": 1
+				}
+			},
+			{
+				"name": "Validate Raw Load",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "All Copies Completed",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SnowflakeV2Source",
+						"query": "SELECT\n    (SELECT COUNT(*) FROM OLIST.RAW.CUSTOMERS) AS CUSTOMERS,\n    (SELECT COUNT(*) FROM OLIST.RAW.GEOLOCATION) AS GEOLOCATION,\n    (SELECT COUNT(*) FROM OLIST.RAW.ORDER_ITEMS) AS ORDER_ITEMS,\n    (SELECT COUNT(*) FROM OLIST.RAW.ORDERS) AS ORDERS,\n    (SELECT COUNT(*) FROM OLIST.RAW.PAYMENTS) AS PAYMENTS,\n    (SELECT COUNT(*) FROM OLIST.RAW.PRODUCTS) AS PRODUCTS,\n    (SELECT COUNT(*) FROM OLIST.RAW.REVIEWS) AS REVIEWS,\n    (SELECT COUNT(*) FROM OLIST.RAW.SELLERS) AS SELLERS,\n    (SELECT COUNT(*) FROM OLIST.RAW.CATEGORY_TRANSLATION) AS CATEGORY_TRANSLATION;",
+						"exportSettings": {
+							"type": "SnowflakeExportCopyCommand"
+						},
+						"treatDecimalAsString": false
+					},
+					"dataset": {
+						"referenceName": "Snf_validation",
+						"type": "DatasetReference"
+					}
+				}
 			}
 		],
 		"annotations": []
