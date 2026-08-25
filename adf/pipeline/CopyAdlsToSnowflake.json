@@ -412,7 +412,7 @@
 					},
 					"sink": {
 						"type": "SnowflakeV2Sink",
-						"preCopyScript": "TRUNCATE TABLE OLIST.RAW.REVIEW;",
+						"preCopyScript": "TRUNCATE TABLE OLIST.RAW.REVIEWS;",
 						"importSettings": {
 							"type": "SnowflakeImportCopyCommand"
 						}
