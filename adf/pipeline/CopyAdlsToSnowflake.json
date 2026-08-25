@@ -1023,6 +1023,18 @@
 						"value": "@and(\n    greater(activity('Validate Raw Load').output.firstRow.CUSTOMERS, 0),\n    and(\n        greater(activity('Validate Raw Load').output.firstRow.GEOLOCATION, 0),\n        and(\n            greater(activity('Validate Raw Load').output.firstRow.ORDER_ITEMS, 0),\n            and(\n                greater(activity('Validate Raw Load').output.firstRow.ORDERS, 0),\n                and(\n                    greater(activity('Validate Raw Load').output.firstRow.PAYMENTS, 0),\n                    and(\n                        greater(activity('Validate Raw Load').output.firstRow.PRODUCTS, 0),\n                        and(\n                            greater(activity('Validate Raw Load').output.firstRow.REVIEWS, 0),\n                            and(\n                                greater(activity('Validate Raw Load').output.firstRow.SELLERS, 0),\n                                greater(activity('Validate Raw Load').output.firstRow.CATEGORY_TRANSLATION, 0)\n                            )\n                        )\n                    )\n                )\n            )\n        )\n    )\n)",
 						"type": "Expression"
 					},
+					"ifFalseActivities": [
+						{
+							"name": "Raw Validation Failed",
+							"type": "Fail",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"message": "One or more RAW tables are empty after ingestion.",
+								"errorCode": "RAW_VALIDATION_FAILED"
+							}
+						}
+					],
 					"ifTrueActivities": [
 						{
 							"name": "Raw Validation Passed",
