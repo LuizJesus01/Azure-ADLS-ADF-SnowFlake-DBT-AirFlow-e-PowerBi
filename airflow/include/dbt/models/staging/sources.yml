@@ -1,0 +1,238 @@
+version: 2
+
+sources:
+  - name: raw_data
+    database: OLIST
+    schema: RAW
+    tables:
+# ============================================================
+      - name: CUSTOMERS
+        description: >
+          Dados brutos dos clientes do Olist. Cada registro representa
+          um cliente associado a um pedido. A origem foi carregada em
+          formato JSON e armazenada em uma coluna VARIANT no Snowflake.
+          O campo customer_unique_id permite identificar um mesmo cliente
+          em diferentes pedidos.
+
+        columns:
+          - name: RAW_CUSTOMERS
+            description: >
+              Objeto JSON contendo os atributos do cliente:
+              customer_id, customer_unique_id, customer_zip_code_prefix,
+              customer_city e customer_state.
+# ============================================================
+      - name: PAYMENTS
+        description: >
+          Dados brutos dos pagamentos realizados nos pedidos.
+          Um mesmo pedido pode possuir múltiplos registros de pagamento.
+          A origem foi carregada em formato JSON e armazenada em uma
+          coluna VARIANT no Snowflake.
+
+        columns:
+          - name: RAW_PAYMENTS
+            description: >
+              Objeto JSON contendo os atributos do pagamento:
+              order_id, payment_sequential, payment_type,
+              payment_installments e payment_value.
+# ============================================================
+      - name: REVIEWS
+        description: >
+          Avaliações realizadas pelos clientes após a compra.
+          Contém nota da avaliação, comentários e timestamps relacionados
+          à criação e resposta da avaliação. A origem foi carregada em
+          formato JSON e armazenada em uma coluna VARIANT no Snowflake.
+
+        columns:
+          - name: RAW_REVIEWS
+            description: >
+              Objeto JSON contendo os atributos da avaliação:
+              review_id, order_id, review_score, review_comment_title,
+              review_comment_message, review_creation_date e
+              review_answer_timestamp.
+# ============================================================
+      - name: PRODUCTS
+        description: >
+          Cadastro bruto dos produtos comercializados no marketplace.
+          Contém categoria, características físicas e informações
+          descritivas dos produtos.
+
+        columns:
+          - name: PRODUCT_ID
+            description: >
+              Identificador único do produto.
+
+          - name: PRODUCT_CATEGORY_NAME
+            description: >
+              Nome da categoria do produto em português.
+
+          - name: PRODUCT_NAME_LENGHT
+            description: >
+              Quantidade de caracteres do nome do produto.
+              O nome original da coluna contém o termo 'lenght',
+              mantido na RAW conforme a fonte original.
+
+          - name: PRODUCT_DESCRIPTION_LENGHT
+            description: >
+              Quantidade de caracteres da descrição do produto.
+              O nome original da coluna contém o termo 'lenght',
+              mantido na RAW conforme a fonte original.
+
+          - name: PRODUCT_PHOTOS_QTY
+            description: >
+              Quantidade de fotos cadastradas para o produto.
+
+          - name: PRODUCT_WEIGHT_G
+            description: >
+              Peso do produto em gramas.
+
+          - name: PRODUCT_LENGTH_CM
+            description: >
+              Comprimento do produto em centímetros.
+
+          - name: PRODUCT_HEIGHT_CM
+            description: >
+              Altura do produto em centímetros.
+
+          - name: PRODUCT_WIDTH_CM
+            description: >
+              Largura do produto em centímetros.
+# ============================================================
+      - name: GEOLOCATION
+        description: >
+          Base geográfica utilizada para relacionar prefixos de CEP
+          com latitude, longitude, cidade e estado. Pode possuir múltiplos
+          registros para um mesmo prefixo de CEP.
+
+        columns:
+          - name: GEOLOCATION_ZIP_CODE_PREFIX
+            description: >
+              Prefixo de cinco dígitos do CEP associado à localização.
+
+          - name: GEOLOCATION_LAT
+            description: >
+              Latitude geográfica associada ao prefixo do CEP.
+
+          - name: GEOLOCATION_LNG
+            description: >
+              Longitude geográfica associada ao prefixo do CEP.
+
+          - name: GEOLOCATION_CITY
+            description: >
+              Nome da cidade associada ao prefixo do CEP.
+
+          - name: GEOLOCATION_STATE
+            description: >
+              Sigla da unidade federativa associada ao prefixo do CEP.
+# ============================================================
+      - name: ORDER_ITEMS
+        description: >
+          Itens individuais pertencentes aos pedidos.
+          Um pedido pode possuir múltiplos itens.
+          A combinação order_id e order_item_id representa a
+          granularidade lógica dos registros desta tabela.
+
+        columns:
+          - name: ORDER_ID
+            description: >
+              Identificador do pedido ao qual o item pertence.
+
+          - name: ORDER_ITEM_ID
+            description: >
+              Número sequencial do item dentro do pedido.
+
+          - name: PRODUCT_ID
+            description: >
+              Identificador do produto vendido.
+
+          - name: SELLER_ID
+            description: >
+              Identificador do vendedor responsável pelo item.
+
+          - name: SHIPPING_LIMIT_DATE
+            description: >
+              Data limite para o vendedor realizar o envio do produto.
+
+          - name: PRICE
+            description: >
+              Valor de venda do item, sem considerar o frete.
+
+          - name: FREIGHT_VALUE
+            description: >
+              Valor de frete associado ao item do pedido.
+# ============================================================
+      - name: ORDERS
+        description: >
+          Pedidos realizados na plataforma Olist.
+          Representa o ciclo de vida do pedido, desde a criação até
+          aprovação, envio, entrega e prazo estimado de entrega.
+
+        columns:
+          - name: ORDER_ID
+            description: >
+              Identificador único do pedido.
+
+          - name: CUSTOMER_ID
+            description: >
+              Identificador do cliente associado ao pedido.
+
+          - name: ORDER_STATUS
+            description: >
+              Status atual do pedido, como delivered, shipped,
+              canceled, invoiced ou processing.
+
+          - name: ORDER_PURCHASE_TIMESTAMP
+            description: >
+              Data e hora em que o pedido foi realizado pelo cliente.
+
+          - name: ORDER_APPROVED_AT
+            description: >
+              Data e hora em que o pagamento do pedido foi aprovado.
+
+          - name: ORDER_DELIVERED_CARRIER_DATE
+            description: >
+              Data e hora em que o pedido foi entregue à transportadora.
+
+          - name: ORDER_DELIVERED_CUSTOMER_DATE
+            description: >
+              Data e hora da entrega efetiva do pedido ao cliente.
+
+          - name: ORDER_ESTIMATED_DELIVERY_DATE
+            description: >
+              Data prevista para entrega do pedido ao cliente.
+# ============================================================
+      - name: CATEGORY_TRANSLATION
+        description: >
+          Tabela de referência utilizada para traduzir os nomes das
+          categorias de produtos do português para o inglês.
+
+        columns:
+          - name: PRODUCT_CATEGORY_NAME
+            description: >
+              Nome original da categoria do produto em português.
+
+          - name: PRODUCT_CATEGORY_NAME_ENGLISH
+            description: >
+              Nome correspondente da categoria do produto em inglês.
+# ============================================================
+      - name: SELLERS
+        description: >
+          Cadastro dos vendedores que comercializam produtos através
+          da plataforma Olist. Contém informações de identificação e
+          localização geográfica.
+
+        columns:
+          - name: SELLER_ID
+            description: >
+              Identificador único do vendedor.
+
+          - name: SELLER_ZIP_CODE_PREFIX
+            description: >
+              Prefixo de cinco dígitos do CEP do vendedor.
+
+          - name: SELLER_CITY
+            description: >
+              Cidade onde o vendedor está localizado.
+
+          - name: SELLER_STATE
+            description: >
+              Sigla da unidade federativa onde o vendedor está localizado.

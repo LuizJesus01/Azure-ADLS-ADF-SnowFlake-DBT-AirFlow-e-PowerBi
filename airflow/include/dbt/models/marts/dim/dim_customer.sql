@@ -1,0 +1,14 @@
+WITH SOURCE AS (
+
+    SELECT *
+    FROM {{ ref('stg_customers') }}
+
+)
+
+SELECT
+    CUSTOMER_ID,
+    CUSTOMER_UNIQUE_ID,
+    CUSTOMER_ZIP_CODE_PREFIX,
+    CUSTOMER_CITY,
+    CUSTOMER_STATE
+FROM SOURCE

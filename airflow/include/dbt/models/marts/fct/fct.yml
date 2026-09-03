@@ -1,0 +1,316 @@
+version: 2
+
+models:
+# ============================================================
+  - name: fct_orders
+    description: >
+      Fato central de pedidos da camada Gold. Cada registro representa
+      um único pedido da plataforma Olist. O modelo consolida informações
+      do ciclo de vida do pedido e métricas agregadas de itens e pagamentos,
+      preservando a granularidade de uma linha por order_id.
+
+    columns:
+
+      - name: order_id
+        description: Identificador único do pedido.
+        data_tests:
+          - unique
+          - not_null
+
+      - name: customer_id
+        description: Identificador do cliente associado ao pedido.
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_customer')
+                field: customer_id
+
+      - name: order_status
+        description: Status atual do pedido.
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values:
+                  - approved
+                  - canceled
+                  - created
+                  - delivered
+                  - invoiced
+                  - processing
+                  - shipped
+                  - unavailable
+
+      - name: order_purchase_timestamp
+        description: Data e hora em que o pedido foi realizado.
+        data_tests:
+          - not_null
+
+      - name: order_approved_at
+        description: Data e hora de aprovação do pagamento do pedido.
+
+      - name: order_delivered_carrier_date
+        description: Data e hora em que o pedido foi entregue à transportadora.
+
+      - name: order_delivered_customer_date
+        description: Data e hora em que o pedido foi entregue ao cliente.
+
+      - name: order_estimated_delivery_date
+        description: Data estimada de entrega informada ao cliente.
+
+      - name: purchase_date_key
+        description: >
+          Chave da data de compra no formato YYYYMMDD, utilizada para
+          relacionamento com a dimensão de datas.
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_date')
+                field: date_key
+
+      - name: delivery_days
+        description: >
+          Quantidade de dias entre a realização do pedido e a entrega
+          efetiva ao cliente.
+
+      - name: delay_days
+        description: >
+          Diferença em dias entre a data estimada de entrega e a data
+          efetiva de entrega. Valores positivos indicam atraso.
+
+      - name: is_late_delivery
+        description: >
+          Indicador booleano que informa se o pedido foi entregue após
+          a data estimada.
+
+      - name: item_count
+        description: >
+          Quantidade total de itens associados ao pedido.
+        data_tests:
+          - not_null
+
+      - name: total_product_value
+        description: >
+          Valor total dos produtos do pedido, sem considerar o frete.
+        data_tests:
+          - not_null
+
+      - name: total_freight_value
+        description: >
+          Valor total de frete associado aos itens do pedido.
+        data_tests:
+          - not_null
+
+      - name: total_order_value
+        description: >
+          Soma do valor dos produtos com o valor total de frete do pedido.
+        data_tests:
+          - not_null
+
+      - name: payment_count
+        description: >
+          Quantidade de registros de pagamento associados ao pedido.
+        data_tests:
+          - not_null
+
+      - name: total_payment_value
+        description: >
+          Valor total registrado nos pagamentos associados ao pedido.
+        data_tests:
+          - not_null
+
+# ============================================================
+  - name: fct_order_items
+    description: >
+      Fato de itens dos pedidos. Cada linha representa um item individual
+      dentro de um pedido. A granularidade é definida pela combinação
+      order_id e order_item_id.
+
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - order_id
+              - order_item_id
+
+    columns:
+
+      - name: order_id
+        description: Identificador do pedido.
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('fct_orders')
+                field: order_id
+
+      - name: order_item_id
+        description: Número sequencial do item dentro do pedido.
+        data_tests:
+          - not_null
+
+      - name: product_id
+        description: Identificador do produto.
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_product')
+                field: product_id
+
+      - name: seller_id
+        description: Identificador do vendedor.
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_seller')
+                field: seller_id
+
+      - name: shipping_limit_date
+        description: Data limite de envio do item pelo vendedor.
+
+      - name: price
+        description: Valor do item sem frete.
+        data_tests:
+          - not_null
+
+      - name: freight_value
+        description: Valor do frete do item.
+        data_tests:
+          - not_null
+
+      - name: item_total_value
+        description: Soma do valor do item com o valor do frete.
+        data_tests:
+          - not_null
+
+# ============================================================
+  - name: fct_payments
+    description: >
+      Fato de pagamentos. Cada registro representa uma sequência de pagamento
+      associada a um pedido. Um pedido pode possuir múltiplos pagamentos.
+
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - order_id
+              - payment_sequential
+
+    columns:
+
+      - name: order_id
+        description: Identificador do pedido.
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('fct_orders')
+                field: order_id
+
+      - name: payment_sequential
+        description: Número sequencial do pagamento dentro do pedido.
+        data_tests:
+          - not_null
+
+      - name: payment_type
+        description: Meio de pagamento utilizado.
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values:
+                  - boleto
+                  - credit_card
+                  - debit_card
+                  - not_defined
+                  - voucher
+
+      - name: payment_installments
+        description: Quantidade de parcelas utilizadas.
+        data_tests:
+          - not_null
+
+      - name: payment_value
+        description: Valor do pagamento.
+        data_tests:
+          - not_null
+
+# ============================================================
+  - name: fct_reviews
+    description: >
+      Fato de avaliações dos pedidos. A granularidade é definida pela
+      combinação review_id e order_id. Durante o profiling foi identificado
+      que review_id pode estar associado a diferentes pedidos, mantendo
+      o mesmo conteúdo da avaliação.
+
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - review_id
+              - order_id
+
+    columns:
+
+      - name: review_id
+        description: >
+          Identificador da avaliação fornecido pelo sistema de origem.
+          O identificador não é único isoladamente e pode estar associado
+          a mais de um pedido.
+        data_tests:
+          - not_null
+
+      - name: order_id
+        description: >
+          Identificador do pedido associado à avaliação. Em conjunto
+          com review_id, define a granularidade da fato.
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('fct_orders')
+                field: order_id
+
+      - name: review_score
+        description: Nota atribuída à experiência do pedido, de 1 a 5.
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: [1, 2, 3, 4, 5]
+
+      - name: review_comment_title
+        description: Título opcional da avaliação.
+
+      - name: review_comment_message
+        description: Comentário textual opcional da avaliação.
+
+      - name: review_creation_date
+        description: Data de criação da avaliação.
+
+      - name: review_answer_timestamp
+        description: Data e hora associada à resposta da avaliação.
+
+      - name: review_date_key
+        description: >
+          Chave da data da avaliação no formato YYYYMMDD.
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('dim_date')
+                field: date_key
+
+      - name: review_response_hours
+        description: >
+          Quantidade de horas entre a criação e a resposta da avaliação.
+
+      - name: has_comment
+        description: >
+          Indicador booleano que informa se a avaliação possui
+          comentário textual.
+
+# ============================================================

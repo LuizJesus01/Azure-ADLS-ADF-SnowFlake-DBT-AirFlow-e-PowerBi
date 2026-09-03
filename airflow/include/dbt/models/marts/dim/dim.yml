@@ -1,0 +1,181 @@
+version: 2
+
+models:
+# ============================================================
+  - name: dim_customer
+    description: >
+      Dimensão de clientes da camada Gold. Cada registro representa
+      um customer_id associado ao contexto de compra do Olist, mantendo
+      customer_unique_id como identificador persistente do cliente.
+
+    columns:
+      - name: customer_id
+        description: Identificador do cliente utilizado nos pedidos.
+        data_tests:
+          - unique
+          - not_null
+
+      - name: customer_unique_id
+        description: >
+          Identificador persistente utilizado para reconhecer o mesmo
+          cliente em diferentes compras.
+        data_tests:
+          - not_null
+
+      - name: customer_zip_code_prefix
+        description: Prefixo de cinco dígitos do CEP do cliente.
+
+      - name: customer_city
+        description: Cidade do cliente.
+
+      - name: customer_state
+        description: Sigla da unidade federativa do cliente.
+
+# ============================================================
+  - name: dim_product
+    description: >
+      Dimensão de produtos enriquecida com a tradução da categoria
+      para inglês e atributos físicos do produto.
+
+    columns:
+      - name: product_id
+        description: Identificador único do produto.
+        data_tests:
+          - unique
+          - not_null
+
+      - name: product_category_name
+        description: Categoria original do produto em português.
+
+      - name: product_category_name_english
+        description: Categoria correspondente em inglês.
+
+      - name: product_name_length
+        description: Quantidade de caracteres do nome do produto.
+
+      - name: product_description_length
+        description: Quantidade de caracteres da descrição do produto.
+
+      - name: product_photos_qty
+        description: Quantidade de fotos cadastradas para o produto.
+
+      - name: product_weight_g
+        description: Peso do produto em gramas.
+
+      - name: product_length_cm
+        description: Comprimento do produto em centímetros.
+
+      - name: product_height_cm
+        description: Altura do produto em centímetros.
+
+      - name: product_width_cm
+        description: Largura do produto em centímetros.
+
+# ============================================================
+  - name: dim_seller
+    description: >
+      Dimensão de vendedores da camada Gold, contendo informações
+      de identificação e localização.
+
+    columns:
+      - name: seller_id
+        description: Identificador único do vendedor.
+        data_tests:
+          - unique
+          - not_null
+
+      - name: seller_zip_code_prefix
+        description: Prefixo de cinco dígitos do CEP do vendedor.
+
+      - name: seller_city
+        description: Cidade do vendedor.
+
+      - name: seller_state
+        description: Sigla da unidade federativa do vendedor.
+
+# ============================================================
+  - name: dim_date
+    description: >
+      Dimensão calendário utilizada para análises temporais da camada Gold.
+      O intervalo é gerado dinamicamente com base na menor e maior data
+      de compra existentes nos pedidos da camada Silver.
+
+    columns:
+      - name: date_key
+        description: Chave numérica da data no formato YYYYMMDD.
+        data_tests:
+          - unique
+          - not_null
+
+      - name: full_date
+        description: Data completa.
+        data_tests:
+          - unique
+          - not_null
+
+      - name: year
+        description: Ano correspondente à data.
+
+      - name: quarter
+        description: Trimestre correspondente à data.
+
+      - name: month
+        description: Número do mês.
+
+      - name: month_name
+        description: Nome abreviado do mês.
+
+      - name: day
+        description: Dia do mês.
+
+      - name: day_of_week
+        description: Dia da semana no padrão ISO, onde segunda-feira é 1.
+
+      - name: day_name
+        description: Nome abreviado do dia da semana.
+
+      - name: week_of_year
+        description: Número da semana no ano.
+
+      - name: is_weekend
+        description: Indica se a data corresponde a sábado ou domingo.
+
+# ============================================================
+  - name: dim_geography
+    description: >
+      Dimensão geográfica consolidada por prefixo de CEP. Como o dataset
+      original pode conter múltiplas localidades e coordenadas para o mesmo
+      prefixo, a cidade e o estado predominantes são definidos pela maior
+      frequência de ocorrência. Latitude e longitude representam a média
+      das coordenadas associadas ao prefixo.
+
+    columns:
+
+      - name: geolocation_zip_code_prefix
+        description: >
+          Prefixo de cinco dígitos do CEP e chave natural da dimensão
+          geográfica.
+        data_tests:
+          - unique
+          - not_null
+
+      - name: geolocation_city
+        description: >
+          Cidade predominante associada ao prefixo de CEP.
+
+      - name: geolocation_state
+        description: >
+          Estado predominante associado ao prefixo de CEP.
+
+      - name: geolocation_lat
+        description: >
+          Latitude média das ocorrências associadas ao prefixo de CEP.
+
+      - name: geolocation_lng
+        description: >
+          Longitude média das ocorrências associadas ao prefixo de CEP.
+
+      - name: source_record_count
+        description: >
+          Quantidade de registros da camada Silver utilizados na
+          consolidação do prefixo de CEP.

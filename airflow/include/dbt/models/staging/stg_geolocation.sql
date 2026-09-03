@@ -1,0 +1,15 @@
+with source as (
+    select * from {{ source('raw_data', 'GEOLOCATION') }}
+),
+
+GEOLOCATION as (
+    SELECT
+        LPAD(TRIM(GEOLOCATION_ZIP_CODE_PREFIX::VARCHAR),5,'0')  AS GEOLOCATION_ZIP_CODE_PREFIX,
+        TRY_TO_DECIMAL(GEOLOCATION_LAT, 10, 7)    			    AS GEOLOCATION_LAT,
+        TRY_TO_DECIMAL(GEOLOCATION_LNG, 10, 7)                  AS GEOLOCATION_LNG,
+        LOWER(TRIM(GEOLOCATION_CITY))::VARCHAR                  AS GEOLOCATION_CITY,
+        UPPER(TRIM(GEOLOCATION_STATE))::VARCHAR                 AS GEOLOCATION_STATE
+    FROM source
+)
+
+select * from GEOLOCATION
