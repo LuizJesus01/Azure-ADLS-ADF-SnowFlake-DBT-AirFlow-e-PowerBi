@@ -1,0 +1,54 @@
+{
+	"name": "Pqt_orders",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "orders.parquet",
+				"folderPath": "ProjetoSnowFlake/Raw/parquet",
+				"container": "projetos"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": [
+			{
+				"name": "order_id",
+				"type": "UTF8"
+			},
+			{
+				"name": "customer_id",
+				"type": "UTF8"
+			},
+			{
+				"name": "order_status",
+				"type": "UTF8"
+			},
+			{
+				"name": "order_purchase_timestamp",
+				"type": "UTF8"
+			},
+			{
+				"name": "order_approved_at",
+				"type": "UTF8"
+			},
+			{
+				"name": "order_delivered_carrier_date",
+				"type": "UTF8"
+			},
+			{
+				"name": "order_delivered_customer_date",
+				"type": "UTF8"
+			},
+			{
+				"name": "order_estimated_delivery_date",
+				"type": "UTF8"
+			}
+		]
+	}
+}

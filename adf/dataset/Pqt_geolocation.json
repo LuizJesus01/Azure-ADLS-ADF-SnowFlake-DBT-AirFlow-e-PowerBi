@@ -1,0 +1,42 @@
+{
+	"name": "Pqt_geolocation",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "geolocation.parquet",
+				"folderPath": "ProjetoSnowFlake/Raw/parquet",
+				"container": "projetos"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": [
+			{
+				"name": "geolocation_zip_code_prefix",
+				"type": "INT64"
+			},
+			{
+				"name": "geolocation_lat",
+				"type": "DOUBLE"
+			},
+			{
+				"name": "geolocation_lng",
+				"type": "DOUBLE"
+			},
+			{
+				"name": "geolocation_city",
+				"type": "UTF8"
+			},
+			{
+				"name": "geolocation_state",
+				"type": "UTF8"
+			}
+		]
+	}
+}

@@ -1,0 +1,39 @@
+{
+	"name": "Json_payments",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "payments.json",
+				"folderPath": "ProjetoSnowFlake/Raw/json",
+				"container": "projetos"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"order_id": {
+					"type": "string"
+				},
+				"payment_sequential": {
+					"type": "integer"
+				},
+				"payment_type": {
+					"type": "string"
+				},
+				"payment_installments": {
+					"type": "integer"
+				},
+				"payment_value": {
+					"type": "number"
+				}
+			}
+		}
+	}
+}

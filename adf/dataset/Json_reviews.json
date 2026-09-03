@@ -1,0 +1,45 @@
+{
+	"name": "Json_reviews",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "reviews.json",
+				"folderPath": "ProjetoSnowFlake/Raw/json",
+				"container": "projetos"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"review_id": {
+					"type": "string"
+				},
+				"order_id": {
+					"type": "string"
+				},
+				"review_score": {
+					"type": "integer"
+				},
+				"review_comment_title": {
+					"type": "string"
+				},
+				"review_comment_message": {
+					"type": "string"
+				},
+				"review_creation_date": {
+					"type": "string"
+				},
+				"review_answer_timestamp": {
+					"type": "string"
+				}
+			}
+		}
+	}
+}
